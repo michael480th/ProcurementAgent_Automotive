@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deal Cheat Sheet — print double-sided</title>
+<style>
+  :root{--ink:#111110;--mut:#8c8a83;--line:#e6e4dd;
+    --stop:#6b2226;--go:#3d5340;--wait:#7a6636;--stopsoft:#f5edec;--gosoft:#eef1ec;--waitsoft:#f4efe4;
+    --serif:"Didot","Bodoni 72","Bodoni MT",Didot,"Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;}
+  *{box-sizing:border-box}
+  body{margin:0;background:#dedbd3;color:var(--ink);font-family:var(--sans);font-size:12.5px;line-height:1.45}
+  .fig{font-variant-numeric:tabular-nums}
+  .page{width:7.5in;min-height:10in;background:#fff;margin:14px auto;padding:0.5in 0.55in;box-shadow:0 6px 22px -14px rgba(0,0,0,.55)}
+  .hdr{text-align:center;border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:6px}
+  .hdr .eyebrow{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--mut)}
+  .hdr .who{font-family:var(--serif);font-size:34px;margin:6px 0 4px}
+  .hdr .car{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+  h2{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);font-weight:600;margin:20px 0 8px;border-bottom:1px solid var(--ink);padding-bottom:5px}
+  .say{padding:5px 0 5px 12px;border-left:1px solid var(--ink);margin:7px 0;font-size:12.5px}
+  .say b{font-family:var(--serif);font-style:italic}
+  ul{margin:5px 0;padding-left:0;list-style:none}
+  li{margin:6px 0;padding-left:16px;position:relative}
+  li::before{content:"—";position:absolute;left:0;color:var(--mut)}
+  .no li::before{color:var(--stop)}
+  .tip{font-size:10.5px;letter-spacing:.04em;color:var(--mut);margin-top:8px}
+  .tip b{font-family:var(--serif);font-style:italic;letter-spacing:0}
+  .strip{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--ink);margin:8px 0}
+  .box{padding:11px 8px;text-align:center;border-right:1px solid var(--line)}
+  .box:last-child{border-right:0}
+  .box .k{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .box .v{font-family:var(--serif);font-size:23px;margin-top:4px}
+  .box.win .v{color:var(--go)} .box.stop .v{color:var(--stop)}
+  .banner{border:1px solid var(--ink);border-top:0;text-align:center;padding:9px;background:var(--stopsoft)}
+  .banner .k{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--stop);font-weight:600}
+  .banner .v{font-family:var(--serif);font-size:26px;color:var(--stop)}
+  .ladder{display:flex;border:1px solid var(--ink);margin:8px 0}
+  .rung{flex:1;text-align:center;padding:8px 4px;border-right:1px solid var(--line)}
+  .rung:last-child{border-right:0}
+  .rung .rk{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  .rung .rv{font-family:var(--serif);font-size:15px;margin-top:3px}
+  .rung.stop{background:var(--stopsoft)} .rung.stop .rv{color:var(--stop)}
+  .read{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--ink);margin:8px 0;text-align:center}
+  .read div{padding:9px 4px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;border-right:1px solid var(--line)}
+  .read div:last-child{border-right:0}
+  .read .g{color:var(--go)} .read .a{color:var(--wait)} .read .r{color:var(--stop)}
+  table{border-collapse:collapse;width:100%;font-size:12px}
+  td{padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  .signals{border:1px solid var(--ink);padding:11px 13px;margin:18px 0 2px}
+  .signals .st{font-size:9px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;margin-bottom:7px}
+  .sig{display:flex;gap:9px;align-items:center;margin:5px 0;font-size:12px}
+  .sig .dot{width:11px;height:11px;flex:0 0 auto}
+  .dot.g{background:var(--go)} .dot.a{background:var(--wait)} .dot.r{background:var(--stop)}
+  .sig b{font-family:var(--serif)}
+  .printbar{max-width:7.5in;margin:16px auto;text-align:center}
+  .printbar button{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:12px 26px;border:1px solid var(--ink);background:var(--ink);color:#fff}
+  .printbar span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6b675e;margin-left:10px}
+  @media print{
+    body{background:#fff} .printbar{display:none}
+    .page{box-shadow:none;margin:0;width:100%;min-height:auto;padding:0.45in 0.5in}
+    .page.back{page-break-before:always}
+  }
+</style>
+</head>
+<body>
+
+<div class="printbar"><button onclick="window.print()">Print double-sided</button><span>Front · Ana &amp; Marta — Back · Michael</span></div>
+
+<!-- FRONT -->
+<div class="page front">
+  <div class="hdr">
+    <div class="eyebrow">Cash — Iowa City</div>
+    <div class="who">Ana &amp; Marta</div>
+    <div class="car">2026 Grand Highlander XLE AWD · Ruby Flare Pearl · Bench</div>
+  </div>
+
+  <h2>Your job</h2>
+  <ul>
+    <li>Do the talking. Relaxed and friendly.</li>
+    <li>Ask their best <b>out-the-door</b> price — let Michael check it.</li>
+    <li>Watch Michael's signal before agreeing to anything.</li>
+  </ul>
+
+  <h2>What to say</h2>
+  <div class="say"><b>Open —</b> "Paying cash, keeping it simple. What's your best out-the-door price?"</div>
+  <div class="say"><b>Frame —</b> "Only the total out-the-door matters. Not monthly."</div>
+  <div class="say"><b>Push —</b> "That's over what we planned. Can you do better on the vehicle price?"</div>
+  <div class="say"><b>Huddle —</b> "Can you give us a few minutes to talk?"</div>
+  <div class="say"><b>Walk —</b> "We'll think it over and check other dealers. Thanks."</div>
+  <div class="tip">The color is <b>Ruby Flare Pearl</b> — never "Supersonic Red."</div>
+
+  <h2>Never</h2>
+  <ul class="no">
+    <li>Talk monthly payment.</li>
+    <li>Say yes to add-ons — paint/fabric protection, nitrogen, VIN etch, warranties.</li>
+    <li>Agree without a look at Michael.</li>
+    <li>Get rushed by "today only" — "then we'll take the next one."</li>
+  </ul>
+
+  <div class="signals">
+    <div class="st">Our signals</div>
+    <div class="sig"><span class="dot g"></span><span><b>Green</b> — pen flat = good, move to close.</span></div>
+    <div class="sig"><span class="dot a"></span><span><b>Amber</b> — pen up = keep negotiating.</span></div>
+    <div class="sig"><span class="dot r"></span><span><b>Red</b> — notebook closed = hold firm / ready to walk.</span></div>
+  </div>
+</div>
+
+<!-- BACK -->
+<div class="page back">
+  <div class="hdr">
+    <div class="eyebrow">Runs the numbers · gives the signal</div>
+    <div class="who">Michael</div>
+    <div class="car">Out-the-door is the only number</div>
+  </div>
+
+  <h2>Numbers</h2>
+  <div class="strip">
+    <div class="box"><div class="k">Sticker</div><div class="v fig">48,700</div></div>
+    <div class="box"><div class="k">Open</div><div class="v fig">46,265</div></div>
+    <div class="box win"><div class="k">Target</div><div class="v fig">47,239</div></div>
+  </div>
+  <div class="strip" style="grid-template-columns:1fr 2fr">
+    <div class="box stop"><div class="k">Walk price</div><div class="v fig">47,414</div></div>
+    <div class="box stop"><div class="k">⛔ Ceiling OTD — never exceed</div><div class="v fig">50,500</div></div>
+  </div>
+
+  <h2>Concession ladder</h2>
+  <div class="ladder">
+    <div class="rung"><div class="rk">Open</div><div class="rv fig">46,265</div></div>
+    <div class="rung"><div class="rk">1</div><div class="rv fig">46,765</div></div>
+    <div class="rung"><div class="rk">2</div><div class="rv fig">47,015</div></div>
+    <div class="rung"><div class="rk">3</div><div class="rv fig">47,165</div></div>
+    <div class="rung"><div class="rk">Final</div><div class="rv fig">47,265</div></div>
+    <div class="rung stop"><div class="rk">Stop</div><div class="rv fig">47,414</div></div>
+  </div>
+
+  <h2>Read their out-the-door</h2>
+  <div class="read">
+    <div class="g">≤ 50,316<br>Green</div>
+    <div class="a">50,316–50,500<br>Amber</div>
+    <div class="r">&gt; 50,500<br>Red</div>
+  </div>
+  <div class="tip">OTD = price + $180 doc + (5% × price + $10) + $35 title + $490 plates. Full sticker $48,700 → $51,850 = <b>Red</b>.</div>
+
+  <h2>Watch for</h2>
+  <table>
+    <tr><td>Payment talk / 4-square</td><td>"Cash — only total price &amp; OTD."</td></tr>
+    <tr><td>Add-ons on the quote</td><td>"Strike them. Base out-the-door."</td></tr>
+    <tr><td>"Market adjustment" over MSRP</td><td>"I don't pay over MSRP."</td></tr>
+    <tr><td>Doc fee $300–500</td><td>"Iowa's about $180."</td></tr>
+  </table>
+
+  <div class="signals">
+    <div class="st">Our signals</div>
+    <div class="sig"><span class="dot g"></span><span><b>Green</b> — pen flat = good, move to close.</span></div>
+    <div class="sig"><span class="dot a"></span><span><b>Amber</b> — pen up = keep negotiating.</span></div>
+    <div class="sig"><span class="dot r"></span><span><b>Red</b> — notebook closed = hold firm / ready to walk.</span></div>
+  </div>
+</div>
+
+</body>
+</html>

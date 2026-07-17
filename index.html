@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Grand Highlander — Deal Board</title>
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#111110;
+    --mut:#8c8a83;
+    --line:#e6e4dd;
+    --line2:#111110;
+    --stop:#6b2226;   --stopsoft:#f5edec;
+    --go:#3d5340;     --gosoft:#eef1ec;
+    --wait:#7a6636;   --waitsoft:#f4efe4;
+    --serif:"Didot","Bodoni 72","Bodoni MT",Didot,"Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-weight:400;font-size:15px;line-height:1.6;letter-spacing:.01em;padding-bottom:56px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 22px}
+  .fig{font-variant-numeric:tabular-nums}
+  .serif{font-family:var(--serif)}
+  .eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--mut);font-weight:500}
+
+  /* header */
+  header{padding:26px 22px 16px;text-align:center;background:var(--paper);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line)}
+  header .eyebrow{color:var(--ink)}
+  header h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.02;letter-spacing:.005em;margin:8px 0 0}
+  header .sub{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-top:9px}
+  .stamp{max-width:600px;margin:12px auto 0;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+  .stamp b{color:var(--ink);font-weight:600}
+
+  /* signature: editorial price block */
+  .lead{padding:34px 0 26px;text-align:center;border-bottom:1px solid var(--ink)}
+  .lead .cap{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut)}
+  .lead .price{font-family:var(--serif);font-weight:400;font-size:78px;line-height:.92;letter-spacing:-.01em;margin:12px 0 2px}
+  .lead .price small{font-size:26px;vertical-align:.9em;letter-spacing:0}
+  .lead .status{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--stop);font-weight:600}
+  .lead .rows{max-width:340px;margin:22px auto 0;text-align:left}
+  .lrow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+  .lrow .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  .lrow .r{font-family:var(--serif);font-size:19px}
+  .lead .verdict{max-width:400px;margin:20px auto 0;font-size:13px;line-height:1.55;color:var(--ink)}
+  .lead .verdict b{color:var(--stop)}
+
+  /* section heads */
+  h2{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);font-weight:600;
+    margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+
+  /* calculator */
+  .calc .fields{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .calc label{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+  .calc input{width:100%;font-family:var(--serif);font-size:24px;padding:7px 0;border:0;border-bottom:1px solid var(--ink);
+    background:transparent;color:var(--ink);border-radius:0}
+  .calc input:focus{outline:0;border-bottom:2px solid var(--ink)}
+  .calc input::placeholder{color:#cfccc4}
+  .out{margin-top:26px;text-align:center;padding:22px 14px;border:1px solid var(--ink)}
+  .out .big{font-family:var(--serif);font-size:46px;line-height:1;letter-spacing:-.01em}
+  .out .lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;margin-top:10px}
+  .out .d{font-size:11px;letter-spacing:.06em;color:var(--mut);margin-top:6px}
+  .out.go{background:var(--gosoft)} .out.go .lab{color:var(--go)}
+  .out.wait{background:var(--waitsoft)} .out.wait .lab{color:var(--wait)}
+  .out.stop{background:var(--stopsoft)} .out.stop .lab{color:var(--stop)}
+  .legend{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:16px;text-align:center;line-height:1.9}
+  .tick{display:inline-block;padding:2px 9px;border:1px solid var(--line)}
+  .tick.g{color:var(--go);border-color:var(--go)} .tick.a{color:var(--wait);border-color:var(--wait)} .tick.r{color:var(--stop);border-color:var(--stop)}
+  .formula{font-family:var(--serif);font-size:12px;letter-spacing:0;text-transform:none;color:var(--mut);margin-top:6px}
+
+  /* number strip */
+  .strip{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--ink)}
+  .cell{padding:16px 12px;text-align:center;border-right:1px solid var(--line)}
+  .cell:last-child{border-right:0}
+  .cell .k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+  .cell .v{font-family:var(--serif);font-size:26px;margin-top:6px}
+  .cell.win .v{color:var(--go)} .cell.stop .v{color:var(--stop)}
+  .banner{border:1px solid var(--ink);border-top:0;padding:14px;text-align:center;background:var(--stopsoft)}
+  .banner .k{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--stop);font-weight:600}
+  .banner .v{font-family:var(--serif);font-size:30px;color:var(--stop);margin-top:2px}
+
+  /* ladder */
+  .ladder{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--ink);margin-top:14px}
+  .rung{flex:1 0 auto;min-width:88px;text-align:center;padding:12px 8px;border-right:1px solid var(--line)}
+  .rung:last-child{border-right:0}
+  .rung .rk{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .rung .rv{font-family:var(--serif);font-size:18px;margin-top:5px}
+  .rung.stop{background:var(--stopsoft)} .rung.stop .rv{color:var(--stop)}
+
+  /* collapsibles */
+  details{border-bottom:1px solid var(--line)}
+  summary{list-style:none;cursor:pointer;padding:15px 2px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    font-weight:500;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary .cv{color:var(--mut);font-family:var(--serif);font-size:16px;transition:transform .18s}
+  details[open] summary .cv{transform:rotate(45deg)}
+  .dbody{padding:2px 2px 20px;font-size:14px}
+  .say{padding:8px 0 8px 16px;border-left:1px solid var(--ink);margin:10px 0}
+  .say b{font-family:var(--serif);font-style:italic;letter-spacing:0}
+  .no{padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .no:last-child{border-bottom:0}
+  .no::before{content:"—";color:var(--stop);margin-right:9px}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  td,th{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:500}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
+  ol.q{margin:6px 0;padding-left:22px} ol.q li{margin:9px 0;font-size:13.5px}
+  ol.q .w{display:block;color:var(--mut);font-size:12px;font-style:italic;font-family:var(--serif);letter-spacing:0}
+  .kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .kv:last-child{border-bottom:0} .kv .kk{color:var(--mut);letter-spacing:.04em} .kv .vv{font-family:var(--serif);font-size:16px}
+  .sig{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .sig:last-child{border-bottom:0}
+  .sig .dot{width:11px;height:11px;flex:0 0 auto}
+  .sig .dot.g{background:var(--go)} .sig .dot.a{background:var(--wait)} .sig .dot.r{background:var(--stop)}
+  .note{border:1px solid var(--ink);padding:11px 13px;font-size:13px;margin:12px 0;line-height:1.5}
+  .note b{font-family:var(--serif);font-style:italic;letter-spacing:0}
+  .micro{font-size:11px;letter-spacing:.04em;color:var(--mut);margin-top:10px}
+  .foot{text-align:center;padding:34px 8px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);line-height:2.2}
+  .foot a{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Cash — Iowa City</div>
+  <h1>Grand Highlander</h1>
+  <div class="sub">2026 XLE AWD · Ruby Flare Pearl · Bench</div>
+  <div class="stamp">
+    <span>Updated <b id="upd">Pre-visit</b></span>
+    <span>Now <b id="clock" class="fig">—</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- SIGNATURE: editorial price block -->
+  <div class="lead">
+    <div class="cap">Their quote — full sticker, 0% off</div>
+    <div class="price serif"><small>$</small>48,700</div>
+    <div class="status" id="topStatus">Over budget — the levers are below</div>
+    <div class="rows">
+      <div class="lrow"><span class="l">Out-the-door, Iowa fees in</span><span class="r fig">$51,850</span></div>
+      <div class="lrow"><span class="l">Your ceiling</span><span class="r fig">$50,500</span></div>
+      <div class="lrow"><span class="l">Gap over ceiling</span><span class="r fig" style="color:var(--stop)">+$1,350</span></div>
+    </div>
+    <div class="verdict">
+      At full sticker this is <b>~$1,350 over budget</b>. The price must move, the config must get cheaper, or we cross-shop.
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <h2>Read Their Number</h2>
+  <div class="calc">
+    <div class="fields">
+      <div><label>Vehicle price</label><input id="price" type="number" inputmode="decimal" placeholder="48700" oninput="calc()"></div>
+      <div><label>Add-ons / junk</label><input id="addons" type="number" inputmode="decimal" placeholder="0" oninput="calc()"></div>
+    </div>
+    <div class="out" id="out"><div class="big serif" id="otd">—</div><div class="lab" id="lab">Enter a price</div><div class="d" id="delta"></div></div>
+    <div class="legend">
+      <span class="tick g">≤ 50,316 win</span> &nbsp; <span class="tick a">≤ 50,500 ok</span> &nbsp; <span class="tick r">&gt; 50,500 walk</span>
+      <div class="formula">out-the-door = price + add-ons + $180 doc + (5% × price + $10) + $35 title + $490 plates</div>
+    </div>
+  </div>
+
+  <!-- NUMBERS -->
+  <h2>The Numbers</h2>
+  <div class="strip">
+    <div class="cell"><div class="k">Open</div><div class="v fig">46,265</div></div>
+    <div class="cell win"><div class="k">Target</div><div class="v fig">47,239</div></div>
+    <div class="cell stop"><div class="k">Walk at</div><div class="v fig">47,414</div></div>
+  </div>
+  <div class="banner"><div class="k">Ceiling out-the-door — never exceed</div><div class="v fig">$50,500</div></div>
+  <div class="ladder">
+    <div class="rung"><div class="rk">Open</div><div class="rv fig">46,265</div></div>
+    <div class="rung"><div class="rk">Move 1</div><div class="rv fig">46,765</div></div>
+    <div class="rung"><div class="rk">Move 2</div><div class="rv fig">47,015</div></div>
+    <div class="rung"><div class="rk">Move 3</div><div class="rv fig">47,165</div></div>
+    <div class="rung"><div class="rk">Final</div><div class="rv fig">47,265</div></div>
+    <div class="rung stop"><div class="rk">Stop</div><div class="rv fig">47,414</div></div>
+  </div>
+  <div class="micro">Raise your offer only in shrinking steps (500 · 250 · 150 · 100). Never cross the stop.</div>
+
+  <!-- LOG -->
+  <h2>Offer Log</h2>
+  <div class="scroll"><table id="log">
+    <thead><tr><th>#</th><th>Their $</th><th>OTD</th><th>Call</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="fig">48,700</td><td class="fig">51,850</td><td style="color:var(--stop)">Walk</td><td>Real quote from the test-drive visit. Full sticker.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="micro">Michael feeds each new number to Claude in chat → this log updates (≈1–2 min, then refresh).</div>
+
+  <!-- REFERENCE -->
+  <h2>In The Room</h2>
+
+  <details>
+    <summary>What to say — Ana &amp; Marta <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="say"><b>Open —</b> "Paying cash, keeping it simple. What's your best out-the-door price?"</div>
+      <div class="say"><b>Frame —</b> "Only the total out-the-door matters. Not monthly."</div>
+      <div class="say"><b>Push —</b> "That's over what we planned. Can you do better on the vehicle price?"</div>
+      <div class="say"><b>Huddle —</b> "Can you give us a few minutes to talk?"</div>
+      <div class="say"><b>Walk —</b> "We'll think it over and check other dealers. Thanks."</div>
+      <div class="note">The color is <b>Ruby Flare Pearl</b> — never "Supersonic Red," which isn't real on this car.</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Never do <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="no">Talk monthly payment — only total out-the-door.</div>
+      <div class="no">Say yes to add-ons — paint/fabric protection, nitrogen, VIN etch, warranties.</div>
+      <div class="no">Agree to anything without a look at Michael.</div>
+      <div class="no">Get rushed by "today only" — answer "then we'll take the next one."</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Our signals <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="sig"><span class="dot g"></span><span><b>Green</b> — pen flat. Good number, move to close.</span></div>
+      <div class="sig"><span class="dot a"></span><span><b>Amber</b> — pen up. Keep negotiating.</span></div>
+      <div class="sig"><span class="dot r"></span><span><b>Red</b> — notebook closed. Hold firm or get ready to walk.</span></div>
+      <div class="micro">In person only — no phones between you. Step out with "Can you give us a few minutes?"</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Their trick — your line <span class="cv">+</span></summary>
+    <div class="dbody"><div class="scroll"><table>
+      <thead><tr><th>They do</th><th>You say</th></tr></thead>
+      <tbody>
+        <tr><td>"What monthly payment?"</td><td>"Cash. No monthly. Best total price."</td></tr>
+        <tr><td>Add-ons on the quote</td><td>"Strike all add-ons — base out-the-door."</td></tr>
+        <tr><td>"Market adjustment" over MSRP</td><td>"I don't pay over MSRP. Remove it or I'm out."</td></tr>
+        <tr><td>"Another buyer's coming"</td><td>"Then sell it to them. I'll take the next."</td></tr>
+        <tr><td>Doc fee $300–500</td><td>"Iowa's about $180. Match it."</td></tr>
+        <tr><td>"Cash or financing?" early</td><td>"Settle price first, then payment."</td></tr>
+      </tbody>
+    </table></div></div>
+  </details>
+
+  <details>
+    <summary>Pin down the $48,700 <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="note">First three: get the exact <b>VIN + sticker breakdown</b>; ask "is the price fixed or can you do better?" (some dealers use no-haggle <b>SmartPath</b>); ask for any <b>dealer add-on sticker</b> on top of the Monroney.</div>
+      <ol class="q">
+        <li>MSRP on the window sticker?<span class="w">The anchor.</span></li>
+        <li>Does $48,700 equal it exactly?<span class="w">If yes, that's 0% off.</span></li>
+        <li>Any market adjustment or ADM?<span class="w">A markup we refuse.</span></li>
+        <li>Any dealer add-ons in the price? List each.<span class="w">Decline most.</span></li>
+        <li>Exact VIN and stock number?<span class="w">Locks the quote.</span></li>
+        <li>Price excludes Iowa 5%, title, plates, doc?<span class="w">For clean OTD math.</span></li>
+        <li>Doc fee amount?<span class="w">Cap about $180.</span></li>
+        <li>Itemized quote in writing before we decide?<span class="w">Stops number-shifting.</span></li>
+      </ol>
+    </div>
+  </details>
+
+  <details>
+    <summary>Ask for — after price is set <span class="cv">+</span></summary>
+    <div class="dbody"><div class="scroll"><table>
+      <thead><tr><th>Ask</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Remove pre-installed add-ons (credit back)</td><td>$300–1,000+</td></tr>
+        <tr><td>All-weather floor liners + cargo mat</td><td>~$300</td></tr>
+        <tr><td>Full tank of gas</td><td>~$60</td></tr>
+        <tr><td>Mud guards / roof cross-bars</td><td>~$230–400</td></tr>
+      </tbody>
+    </table></div>
+    <div class="micro">Freebies only after the price is locked — never in place of a price cut.</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Dealer's real cost <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="kv"><span class="kk">Sticker / MSRP</span><span class="vv">$48,700</span></div>
+      <div class="kv"><span class="kk">Invoice — base (AutoFinder)</span><span class="vv">$42,573</span></div>
+      <div class="kv"><span class="kk">Invoice + destination</span><span class="vv">≈ $44,168</span></div>
+      <div class="kv"><span class="kk">Est. true floor (− holdback)</span><span class="vv">≈ $43,235</span></div>
+      <div class="micro">Room exists on paper — but this model transacts <b>0–4% off</b>, has no factory cash, and may be no-haggle. Don't cite invoice out loud; anchor on MSRP-minus-a-few-percent.</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Facts &amp; Iowa fees <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="kv"><span class="kk">New-registration fee</span><span class="vv">5% × price + $10</span></div>
+      <div class="kv"><span class="kk">Doc fee (excl. from 5%)</span><span class="vv">$180 cap</span></div>
+      <div class="kv"><span class="kk">Title</span><span class="vv">$35</span></div>
+      <div class="kv"><span class="kk">First-year plates</span><span class="vv">~$490</span></div>
+      <div class="kv"><span class="kk">Factory cash (cash buyer)</span><span class="vv">$0</span></div>
+      <div class="kv"><span class="kk">VIN</span><span class="vv">…33G152</span></div>
+      <div class="micro">Plates prorate by Michael's birth month — could be well under $490.</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Cross-shop dealers <span class="cv">+</span></summary>
+    <div class="dbody">
+      <div class="note">⚠ McGrath owns <b>both</b> Iowa City and Cedar Rapids — they won't compete. Real cross-shops: Muscatine, Davenport, Burlington, Cedar Falls.</div>
+      <div class="scroll"><table>
+        <thead><tr><th>Dealer</th><th>City</th><th>Dist</th></tr></thead>
+        <tbody>
+          <tr><td>McGrath Toyota</td><td>Iowa City</td><td class="fig">0</td></tr>
+          <tr><td>Cedar Rapids Toyota <span style="color:var(--mut)">(same owner)</span></td><td>Hiawatha</td><td class="fig">28</td></tr>
+          <tr><td>Toyota of Muscatine</td><td>Muscatine</td><td class="fig">28</td></tr>
+          <tr><td>Smart Toyota QC</td><td>Davenport</td><td class="fig">55</td></tr>
+          <tr><td>Deery Brothers</td><td>Burlington</td><td class="fig">65</td></tr>
+          <tr><td>Dan Deery</td><td>Cedar Falls</td><td class="fig">75</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <div class="foot">
+    Michael · Ana · Marta<br>
+    <a href="cheatsheet.html">Printable cheat sheet</a> — <a href="data/facts.md">Reference facts</a><br>
+    Estimates only — verify against the window sticker. Not affiliated with Toyota.
+  </div>
+</div>
+
+<script>
+  function tick(){var d=new Date(),h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';h=h%12||12;
+    document.getElementById('clock').textContent=h+':'+(m<10?'0':'')+m+' '+ap;}
+  tick();setInterval(tick,15000);
+
+  var TARGET=50316,CEIL=50500;
+  var f=function(n){return '$'+Math.round(n).toLocaleString('en-US');};
+  function calc(){
+    var p=parseFloat(document.getElementById('price').value)||0,
+        a=parseFloat(document.getElementById('addons').value)||0,
+        out=document.getElementById('out'),otd=document.getElementById('otd'),
+        lab=document.getElementById('lab'),del=document.getElementById('delta');
+    if(p<=0){out.className='out';otd.textContent='—';lab.textContent='Enter a price';del.textContent='';return;}
+    var t=p+a+180+(p*0.05+10)+35+490;
+    otd.textContent=f(t);
+    var c;
+    if(t<=TARGET){c='go';lab.textContent='Win — at or below target. Close it.';}
+    else if(t<=CEIL){c='wait';lab.textContent='OK — under ceiling. Keep pushing.';}
+    else{c='stop';lab.textContent='Walk — over your $50,500 ceiling.';}
+    out.className='out '+c;
+    var dc=t-CEIL;del.textContent=(dc>0?'+'+f(dc)+' over ceiling':f(-dc)+' under ceiling');
+  }
+
+  var last=Date.now();
+  ['touchstart','scroll','keydown'].forEach(function(e){window.addEventListener(e,function(){last=Date.now();},{passive:true});});
+  setInterval(function(){
+    var typing=document.activeElement&&document.activeElement.tagName==='INPUT';
+    if(!typing&&Date.now()-last>45000)location.reload();
+  },30000);
+</script>
+</body>
+</html>
