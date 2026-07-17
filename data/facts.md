@@ -5,13 +5,17 @@ Confirmed from the actual window sticker (VIN ending 33G152) plus research memo.
 ## Price build
 | Item | Amount |
 |---|---|
-| Base MSRP (incl. AWD, excl. destination) | $46,630 |
-| Ruby Flare Pearl premium paint | $475 |
-| Destination | $1,595 |
+| Base MSRP XLE AWD (confirmed factory Monroney) | $46,230 |
+| Premium paint — red *or* white (confirmed) | $475 |
+| Destination / DPH (confirmed) | $1,595 |
 | 8-passenger bench seat | $0 (no-cost) |
-| **Total MSRP (sticker)** | **$48,700** |
+| Stripped bench XLE AWD, red/white | **≈ $48,300** |
+| Other factory options on their car (~) | ~$400 |
+| **Total MSRP (their car)** | **$48,700** |
 
-Dealer's quote = **$48,700 = full sticker, 0% off.**
+Dealer's quote = **$48,700 ≈ near-sticker on a near-base build.**
+
+Confirmed 2026-07-17 against a real XLE AWD Monroney (VIN …147732, Green Toyota, Springfield IL — a loaded 7-seat comparison car at $50,993). **Jack's $575 paint claim is wrong: premium paint is $475.** Seating shows on the Monroney interior line: "Seating for 8" = bench, "Seating for 7" = captain's chairs. Common option prices: pano moonroof $1,350, all-weather liners $388, illuminated sills $395, body side moldings $280, puddle lamps $175, screen protector $105.
 
 ## Our targets
 | | Vehicle price | Off MSRP | OTD |
